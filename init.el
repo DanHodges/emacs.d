@@ -16,35 +16,29 @@
 
 (setq use-package-always-ensure t)
 
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
 (use-package which-key
   :init
   (which-key-mode))
-
 (use-package beacon
   :init
   (beacon-mode 1))
-
 (use-package rjsx-mode
   :mode "\\.js\\'")
-
 (use-package material-theme
   :defer t)
 (load-theme 'material t)
-
 (use-package ivy
   :init
   (ivy-mode 1))
-
 (use-package counsel)
-
 (use-package flycheck)
-
 (use-package lsp-mode)
 (use-package lsp-javascript-typescript
   :init
-  (add-hook 'js2-mode-hook #'lsp-javascript-typescript-enable)
-  (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
-  (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable)
   (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable))
 
 (setq ivy-use-virtual-buffers t)
@@ -54,6 +48,16 @@
 (setq scroll-conservatively 10)
 (setq scheme-program-name "/usr/local/bin/scheme")
 (setq mac-command-modifier 'super)
+(setq make-backup-files nil)
+
+(when window-system  (global-hl-line-mode 1))
+(when window-system  (global-prettify-symbols-mode t))
+
+(tool-bar-mode -1)
+(menu-bar-mode 1)
+(scroll-bar-mode -1)
+(global-visual-line-mode 1)
+(desktop-save-mode 1)
 
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
@@ -72,14 +76,6 @@
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
-(tool-bar-mode -1)
-(menu-bar-mode 1)
-(scroll-bar-mode -1)
-(global-visual-line-mode 1)
-(desktop-save-mode 1)
-
-(when window-system  (global-hl-line-mode 1))
-(when window-system  (global-prettify-symbols-mode t))
 
 (global-set-key (kbd "<s-kp-subtract>") 'split-window-below)
 (global-set-key (kbd "s-\\") 'split-window-right)
@@ -102,4 +98,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :stipple nil :background "#263238" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 145 :width normal :foundry "nil" :family "Source Code Pro")))))
