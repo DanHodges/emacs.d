@@ -14,32 +14,38 @@
 (require 'diminish)
 (require 'bind-key)
 
+(setq use-package-always-ensure t)
+
 (use-package which-key
-  :ensure t
   :init
   (which-key-mode))
 
 (use-package beacon
-  :ensure t
   :init
   (beacon-mode 1))
 
 (use-package rjsx-mode
-  :ensure t
   :mode "\\.js\\'")
 
 (use-package material-theme
-  :ensure t
   :defer t)
 (load-theme 'material t)
 
 (use-package ivy
-  :ensure t
   :init
   (ivy-mode 1))
 
-(use-package counsel
-  :ensure t)
+(use-package counsel)
+
+(use-package flycheck)
+
+(use-package lsp-mode)
+(use-package lsp-javascript-typescript
+  :init
+  (add-hook 'js2-mode-hook #'lsp-javascript-typescript-enable)
+  (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+  (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable)
+  (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable))
 
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
@@ -89,7 +95,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(package-selected-packages (quote (rjsx-mode beacon which-key use-package diminish))))
+ '(lsp-project-whitelist (quote ("^/Users/dxhodge/code/hawaii-react-js/$")))
+ '(package-selected-packages (quote (use-package diminish))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
