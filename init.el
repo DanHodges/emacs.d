@@ -31,10 +31,17 @@
 (use-package material-theme
   :defer t)
 (load-theme 'material t)
+
+(use-package projectile
+  :init
+  (projectile-mode))
+(setq projectile-completion-system 'ivy)
+
 (use-package ivy
   :init
   (ivy-mode 1))
 (use-package counsel)
+(use-package counsel-projectile)
 (use-package flycheck)
 (use-package lsp-mode)
 (use-package lsp-javascript-typescript
@@ -48,7 +55,14 @@
 (setq scroll-conservatively 10)
 (setq scheme-program-name "/usr/local/bin/scheme")
 (setq mac-command-modifier 'super)
-(setq make-backup-files nil)
+(setq ring-bell-function 'ignore)
+
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+
 
 (when window-system  (global-hl-line-mode 1))
 (when window-system  (global-prettify-symbols-mode t))
@@ -57,10 +71,13 @@
 (menu-bar-mode 1)
 (scroll-bar-mode -1)
 (global-visual-line-mode 1)
-(desktop-save-mode 1)
+;;(desktop-save-mode 1)
+
 
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c v") 'ivy-push-view)
+(global-set-key (kbd "C-c V") 'ivy-pop-view)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -83,6 +100,10 @@
 (global-set-key (kbd "s-W") 'delete-frame)
 (global-set-key (kbd "s-[") (lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "s-]") (lambda () (interactive) (other-window 1)))
+(global-set-key (kbd "s-i") 'projectile-find-tag)
+(global-set-key (kbd "s-g") 'counsel-git-grep)
+(global-set-key (kbd "s-o") 'projectile-switch-project)
+(global-set-key (kbd "s-p") 'projectile-find-file)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -91,8 +112,10 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(lsp-project-whitelist (quote ("^/Users/dxhodge/code/hawaii-react-js/$")))
- '(package-selected-packages (quote (use-package diminish))))
+ '(lsp-project-whitelist
+   (quote
+    ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
+ '(package-selected-packages (quote (counsel-projectile use-package diminish))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
