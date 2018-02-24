@@ -11,7 +11,9 @@
 
 (eval-when-compile 
   (require 'use-package))
+
 (require 'diminish)
+
 (require 'bind-key)
 
 (setq use-package-always-ensure t)
@@ -40,6 +42,7 @@
 (use-package 
   projectile 
   :init (projectile-mode))
+
 (setq projectile-completion-system 'ivy)
 
 (use-package 
@@ -51,7 +54,7 @@
 
 (use-package 
   counsel-projectile)
-
+				   
 (use-package 
   flycheck)
 
@@ -66,22 +69,22 @@
 
 (use-package 
   elisp-format)
+(use-package
+  evil)
+;; :init (evil-mode 1))
 
-(setq wgrep-auto-save-buffer t)
-(setq wgrep-enable-key "r")
-(setq wgrep-change-readonly-file t)
+(use-package
+  paredit)
 
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(setq js2-strict-trailing-comma-warning nil)
-(setq intibit-startup-message t)
-(setq scroll-conservatively 10)
-(setq scheme-program-name "/usr/local/bin/scheme")
-(setq mac-command-modifier 'super)
-(setq ring-bell-function 'ignore)
+(use-package
+  geiser)
 
-(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+(use-package
+  super-save
+  :init (super-save-mode +1))
+(setq super-save-auto-save-when-idle t)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
 
 (when window-system  (global-hl-line-mode 1))
 (when window-system  (global-prettify-symbols-mode t))
@@ -91,6 +94,8 @@
 (scroll-bar-mode -1)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
+(global-linum-mode)
+(global-auto-revert-mode t)
 
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
@@ -131,34 +136,25 @@
 (global-set-key (kbd "s-g") 'counsel-git-grep)
 (global-set-key (kbd "s-o") 'projectile-switch-project)
 (global-set-key (kbd "s-p") 'projectile-find-file)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector [default default default italic underline success warning error]) 
- '(lsp-project-whitelist (quote ("^/Users/dxhodge/code/MyWsb/$"
-				 "^/Users/dxhodge/code/hawaii-react-js/$"))) 
- '(package-selected-packages (quote (counsel-projectile use-package diminish))))
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(lsp-project-whitelist
+   (quote
+    ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
+ '(package-selected-packages
+   (quote
+    (geiser paredit parredit counsel-projectile use-package diminish))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t 
-	     (:inherit nil 
-		       :stipple nil 
-		       :background "#263238" 
-		       :foreground "#ffffff" 
-		       :inverse-video nil 
-		       :box nil 
-		       :strike-through nil 
-		       :overline nil 
-		       :underline nil 
-		       :slant normal 
-		       :weight normal 
-		       :height 145 
-		       :width normal 
-		       :foundry "nil" 
-		       :family "Source Code Pro")))))
+ '(default ((t (:inherit nil :stipple nil :background "#263238" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 145 :width normal :foundry "nil" :family "Source Code Pro")))))
+(put 'downcase-region 'disabled nil)
