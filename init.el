@@ -64,6 +64,7 @@
 (use-package 
   lsp-javascript-typescript 
   :init (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable))
+
 (use-package 
   wgrep)
 
@@ -82,9 +83,20 @@
 (use-package
   super-save
   :init (super-save-mode +1))
+
+(use-package
+  prettier-js
+  :init (add-hook 'rjsx-mode-hook 'prettier-js-mode))
+
+(use-package
+  add-node-modules-path
+  :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
+
 (setq super-save-auto-save-when-idle t)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq js-indent-level 2)
+(setq-default js2-strict-trailing-comma-warning nil)
 
 (when window-system  (global-hl-line-mode 1))
 (when window-system  (global-prettify-symbols-mode t))
@@ -114,6 +126,20 @@
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2))
+
+(defun move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1))
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
+
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
@@ -147,7 +173,7 @@
    [default default default italic underline success warning error])
  '(lsp-project-whitelist
    (quote
-    ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
+    ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
  '(package-selected-packages
    (quote
     (geiser paredit parredit counsel-projectile use-package diminish))))
