@@ -34,10 +34,11 @@
   rjsx-mode 
   :mode "\\.js\\'")
 
-(use-package 
-  material-theme 
-  :defer t)
-(load-theme 'material t)
+(use-package darcula-theme
+  :ensure t)
+  ;; :config
+  ;; (set-frame-font "Monospaced"))
+
 
 (use-package 
   projectile 
@@ -71,8 +72,8 @@
 (use-package 
   elisp-format)
 (use-package
-  evil)
-;; :init (evil-mode 1))
+  evil
+ :init (evil-mode 1))
 
 (use-package
   paredit)
@@ -92,11 +93,19 @@
   add-node-modules-path
   :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
 
+(use-package dumb-jump
+  :config (setq dumb-jump-selector 'ivy)
+  :init (dumb-jump-mode))
+
 (setq super-save-auto-save-when-idle t)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq js-indent-level 2)
+(setq js2-indent-level 2)
+(setq rjsx-indent-level 2)
 (setq-default js2-strict-trailing-comma-warning nil)
+(setq-default line-spacing .3)
+(set-default-font "Monaco-14")
 
 (when window-system  (global-hl-line-mode 1))
 (when window-system  (global-prettify-symbols-mode t))
@@ -108,6 +117,10 @@
 (desktop-save-mode 1)
 (global-linum-mode)
 (global-auto-revert-mode t)
+
+(require 'server)
+(or (server-running-p)
+  (server-start))
 
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
@@ -176,11 +189,11 @@
     ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
  '(package-selected-packages
    (quote
-    (geiser paredit parredit counsel-projectile use-package diminish))))
+    (dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
+(put 'downcase-region 'disabled nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#263238" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 145 :width normal :foundry "nil" :family "Source Code Pro")))))
-(put 'downcase-region 'disabled nil)
+ )
