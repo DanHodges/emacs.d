@@ -36,9 +36,6 @@
 
 (use-package darcula-theme
   :ensure t)
-  ;; :config
-  ;; (set-frame-font "Monospaced"))
-
 
 (use-package 
   projectile 
@@ -71,9 +68,11 @@
 
 (use-package 
   elisp-format)
+
 (use-package
-  evil
- :init (evil-mode 1))
+  evil)
+;; evil
+;; :init (evil-mode 1))
 
 (use-package
   paredit)
@@ -104,7 +103,7 @@
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
 (setq-default js2-strict-trailing-comma-warning nil)
-(setq-default line-spacing .3)
+(setq-default line-spacing .25)
 (set-default-font "Monaco-14")
 
 (when window-system  (global-hl-line-mode 1))
@@ -150,17 +149,12 @@
   (forward-line 1)
   (transpose-lines 1)
   (forward-line -1))
+
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
-
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
-
-(global-set-key (kbd "<s-kp-subtract>") 'split-window-below)
-(global-set-key (kbd "s-\\") 'split-window-right)
-(global-set-key (kbd "s-w") 'delete-window)
-(global-set-key (kbd "s-W") 'delete-frame)
 (global-set-key (kbd "s-[") 
 		(lambda () 
 		  (interactive) 
@@ -171,17 +165,14 @@
 		  (interactive) 
 		  (other-window 1)))
 
-(global-set-key (kbd "s-i") 'projectile-find-tag)
-(global-set-key (kbd "s-g") 'counsel-git-grep)
-(global-set-key (kbd "s-o") 'projectile-switch-project)
+(global-set-key (kbd "s-v") 'evil-mode)
+(global-set-key (kbd "s-(") 'paredit-mode)
+
 (global-set-key (kbd "s-p") 'projectile-find-file)
+(global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(lsp-project-whitelist
@@ -191,9 +182,4 @@
    (quote
     (dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
 (put 'downcase-region 'disabled nil)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-faces)
