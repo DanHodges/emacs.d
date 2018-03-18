@@ -34,8 +34,8 @@
   rjsx-mode 
   :mode "\\.js\\'")
 
-(use-package darcula-theme
-  :ensure t)
+(use-package zenburn-theme)
+(set-face-attribute 'fringe nil :background nil)
 
 (use-package 
   projectile 
@@ -49,6 +49,9 @@
 
 (use-package 
   counsel)
+
+(use-package
+  neotree)
 
 (use-package 
   counsel-projectile)
@@ -70,15 +73,19 @@
   elisp-format)
 
 (use-package
-  evil)
-;; evil
-;; :init (evil-mode 1))
+;;  evil)
+  evil
+  :init (evil-mode 1))
 
 (use-package
   paredit)
 
 (use-package
   geiser)
+
+(use-package
+  magit
+  :bind ("C-x g" . magit-status))
 
 (use-package
   super-save
@@ -96,12 +103,22 @@
   :config (setq dumb-jump-selector 'ivy)
   :init (dumb-jump-mode))
 
-(setq super-save-auto-save-when-idle t)
+(use-package powerline
+  :config (powerline-default-theme))
+
+(use-package company)
+(add-hook 'after-init-hook 'global-company-mode)
+(use-package company-lsp)
+(push 'company-lsp company-backends)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq js-indent-level 2)
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
+(setq-default js2-basic-offset 2
+              js2-bounce-indent-p nil)
+
 (setq-default js2-strict-trailing-comma-warning nil)
 (setq-default line-spacing .25)
 (set-default-font "Monaco-14")
@@ -121,28 +138,7 @@
 (or (server-running-p)
   (server-start))
 
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "C-c v") 'ivy-push-view)
-(global-set-key (kbd "C-c V") 'ivy-pop-view)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-
-(defun move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2))
+(global-set-key (kbd "s-1") 'neotree-toggle)
 
 (defun move-line-down ()
   (interactive)
@@ -164,15 +160,25 @@
 		(lambda () 
 		  (interactive) 
 		  (other-window 1)))
+(global-set-key (kbd "s-<left>")  'windmove-left)
+(global-set-key (kbd "s-<right>") 'windmove-right)
+(global-set-key (kbd "s-<up>")    'windmove-up)
+(global-set-key (kbd "s-<down>")  'windmove-down)
 
-(global-set-key (kbd "s-v") 'evil-mode)
+(global-set-key (kbd "s-e") 'evil-mode)
+;; use Emacs keybindings when in insert mode }:)
+(setcdr evil-insert-state-map nil)
+(define-key evil-insert-state-map [escape] 'evil-normal-state)
 (global-set-key (kbd "s-(") 'paredit-mode)
-
 (global-set-key (kbd "s-p") 'projectile-find-file)
 (global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(lsp-project-whitelist
@@ -180,6 +186,11 @@
     ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
  '(package-selected-packages
    (quote
-    (dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
+    (company-lsp company company-mode neotree powerline magit dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
 (put 'downcase-region 'disabled nil)
-(custom-set-faces)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
