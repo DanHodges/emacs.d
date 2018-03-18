@@ -34,8 +34,10 @@
   rjsx-mode 
   :mode "\\.js\\'")
 
-(use-package zenburn-theme)
-(set-face-attribute 'fringe nil :background nil)
+(use-package 
+  zenburn-theme)
+(set-face-attribute 'fringe nil 
+		    :background nil)
 
 (use-package 
   projectile 
@@ -50,12 +52,12 @@
 (use-package 
   counsel)
 
-(use-package
+(use-package 
   neotree)
 
 (use-package 
   counsel-projectile)
-				   
+
 (use-package 
   flycheck)
 
@@ -72,43 +74,46 @@
 (use-package 
   elisp-format)
 
-(use-package
-;;  evil)
-  evil
+(use-package 
+  evil 
   :init (evil-mode 1))
 
-(use-package
+(use-package 
   paredit)
 
-(use-package
+(use-package 
   geiser)
 
-(use-package
-  magit
+(use-package 
+  magit 
   :bind ("C-x g" . magit-status))
 
-(use-package
-  super-save
+(use-package 
+  super-save 
   :init (super-save-mode +1))
 
-(use-package
-  prettier-js
+(use-package 
+  prettier-js 
   :init (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
-(use-package
-  add-node-modules-path
+(use-package 
+  add-node-modules-path 
   :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
 
-(use-package dumb-jump
-  :config (setq dumb-jump-selector 'ivy)
+(use-package 
+  dumb-jump 
+  :config (setq dumb-jump-selector 'ivy) 
   :init (dumb-jump-mode))
 
-(use-package powerline
+(use-package 
+  powerline 
   :config (powerline-default-theme))
 
-(use-package company)
+(use-package 
+  company)
 (add-hook 'after-init-hook 'global-company-mode)
-(use-package company-lsp)
+(use-package 
+  company-lsp)
 (push 'company-lsp company-backends)
 
 (setq make-backup-files nil)
@@ -116,8 +121,7 @@
 (setq js-indent-level 2)
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
-(setq-default js2-basic-offset 2
-              js2-bounce-indent-p nil)
+(setq-default js2-basic-offset 2 js2-bounce-indent-p nil)
 
 (setq-default js2-strict-trailing-comma-warning nil)
 (setq-default line-spacing .25)
@@ -135,15 +139,20 @@
 (global-auto-revert-mode t)
 
 (require 'server)
-(or (server-running-p)
-  (server-start))
+(or (server-running-p) 
+    (server-start))
 
 (global-set-key (kbd "s-1") 'neotree-toggle)
 
-(defun move-line-down ()
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
+(defun move-line-up () 
+  (interactive) 
+  (transpose-lines 1) 
+  (forward-line -2))
+
+(defun move-line-down () 
+  (interactive) 
+  (forward-line 1) 
+  (transpose-lines 1) 
   (forward-line -1))
 
 (global-set-key (kbd "M-<up>") 'move-line-up)
@@ -173,20 +182,21 @@
 (global-set-key (kbd "s-p") 'projectile-find-file)
 (global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "s-=") 'text-scale-increase)
+(global-set-key (kbd "s--") 'text-scale-decrease)
+(global-set-key (kbd "s-/") 'comment-or-uncomment-region)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(lsp-project-whitelist
-   (quote
-    ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$" "^/Users/dxhodge/code/hawaii-react-js/$")))
- '(package-selected-packages
-   (quote
-    (company-lsp company company-mode neotree powerline magit dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
+ '(ansi-color-faces-vector [default default default italic underline success warning error]) 
+ '(lsp-project-whitelist (quote ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$"
+				 "^/Users/dxhodge/code/hawaii-react-js/$"))) 
+ '(package-selected-packages (quote (company-lsp company company-mode neotree powerline magit
+						 dumb-jump geiser paredit parredit
+						 counsel-projectile use-package diminish))))
 (put 'downcase-region 'disabled nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
