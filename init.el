@@ -1,39 +1,41 @@
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+;;; init.el --- Emacs init file
+
+;;; Commentary:
+;; 
+
+;;; Code:
 (package-initialize)
 
-(unless (package-installed-p 'use-package) 
-  (package-refresh-contents) 
-  (package-install 'use-package))
-
-(eval-when-compile 
-  (require 'use-package))
-(require 'diminish)
 (require 'bind-key)
+(require 'server)
+(require 'package)
+
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+
+(eval-when-compile
+  (require 'use-package))
 
 (setq use-package-always-ensure t)
 
-(use-package 
-  exec-path-from-shell 
+(use-package
+  exec-path-from-shell
   :config (exec-path-from-shell-initialize))
 
-(use-package 
-  which-key 
+(use-package
+  which-key
   :init (which-key-mode))
 
-(use-package 
-  beacon 
+(use-package
+  beacon
   :init (beacon-mode 1))
 
-(use-package 
-  rjsx-mode 
+(use-package
+  rjsx-mode
   :mode "\\.js\\'")
 
-(use-package 
-  projectile 
+(use-package
+  projectile
   :init (projectile-mode))
 
 (use-package
@@ -41,69 +43,63 @@
   
 (setq projectile-completion-system 'ivy)
 
-(use-package 
-  ivy 
+(use-package
+  ivy
   :init (ivy-mode 1))
 
-(use-package 
+(use-package
   zenburn-theme)
 
-(use-package 
+(use-package
   counsel)
 
-(use-package 
+(use-package
   counsel-projectile)
 
-(use-package 
-  flycheck)
-
-(use-package 
+(use-package
   clojure-mode)
 
-(use-package 
+(use-package
   cider)
 
-(use-package 
+(use-package
   wgrep)
 
-(use-package 
+(use-package
   elisp-format)
 
-(use-package 
+(use-package
   paredit)
 
-(use-package 
+(use-package
   geiser)
 
-(use-package 
+(use-package
   company)
 
-(use-package 
-  telephone-line 
+(use-package
+  telephone-line
   :init (telephone-line-mode 1))
 
-;;(use-package 
-;;  evil)
-
-(use-package 
-  magit 
+(use-package
+  magit
   :bind ("C-x g" . magit-status))
 
-(use-package 
-  super-save 
+(use-package
+  super-save
   :init (super-save-mode +1))
 
-(use-package 
-  prettier-js 
+(use-package
+  prettier-js
   :init (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
-(use-package 
-  add-node-modules-path 
+(use-package
+  add-node-modules-path
   :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
 
-(use-package 
-  dumb-jump 
-  :config (setq dumb-jump-selector 'ivy) 
+(use-package
+  dumb-jump
+  :config (setq dumb-jump-selector 'ivy)
   :init (dumb-jump-mode))
 
 (use-package flycheck
@@ -121,7 +117,7 @@
 (setq rjsx-indent-level 2)
 (setq-default js2-basic-offset 2 js2-bounce-indent-p nil)
 (setq-default js2-strict-trailing-comma-warning nil)
-(set-default-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1")
 
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
@@ -132,27 +128,13 @@
 (scroll-bar-mode -1)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
-(when (version<= "26.0.50" emacs-version ) 
+(when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
 
-(require 'server)
-(or (server-running-p) 
+(or (server-running-p)
     (server-start))
 
-(defun move-line-up () 
-  (interactive) 
-  (transpose-lines 1) 
-  (forward-line -2))
-
-(defun move-line-down () 
-  (interactive) 
-  (forward-line 1) 
-  (transpose-lines 1) 
-  (forward-line -1))
-
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-<down>") 'move-line-down)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -180,20 +162,9 @@
 (global-set-key (kbd "C-;") 'avy-goto-char-timer)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(package-selected-packages
-   (quote
-    (expand-region avy telephone-line smart-mode-line-powerline-theme smart-mode-line cider clojure-mode flow-js2-mode flow-minor-mode company-lsp company company-mode magit dumb-jump geiser paredit parredit counsel-projectile use-package diminish))))
-(put 'downcase-region 'disabled nil)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+(provide 'init)
+
+;;; init.el ends here
