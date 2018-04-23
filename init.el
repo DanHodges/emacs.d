@@ -47,7 +47,6 @@
 
 (use-package 
   tide 
-  :ensure t 
   :config (setq company-tooltip-align-annotations t) 
   (add-hook 'before-save-hook 'tide-format-before-save) 
   (add-hook 'rjsx-mode-hook #'setup-tide-mode))
@@ -82,32 +81,24 @@
 
 (use-package 
   wgrep)
+
 (use-package 
   elisp-format)
 
-;; (use-package
-;;   paredit
-;;   :config
-;;   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-;;   (add-hook 'scheme-mode-hook 'paredit-mode)
-;;   (add-hook 'lisp-mode-hook 'paredit-mode)
-;;   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
-;;   (add-hook 'clojure-mode-hook 'paredit-mode)
-;;   (if (bound-and-true-p paredit-mode) (electric-pair-mode -1) (electric-pair-mode 1)))
-
-
-;; (use-package
-;;   paredit-everywhere
-;;   :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
+(use-package 
+  paredit 
+  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
+  (add-hook 'scheme-mode-hook 'paredit-mode) 
+  (add-hook 'lisp-mode-hook 'paredit-mode) 
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode) 
+  (add-hook 'clojure-mode-hook 'paredit-mode) 
+  (if (bound-and-true-p paredit-mode) 
+      (electric-pair-mode -1) 
+    (electric-pair-mode 1)))
 
 (use-package 
-  smartparens)
-
-(use-package 
-  smartparens-config 
-  :ensure smartparens 
-  :config (smartparens-global-strict-mode t) 
-  (sp-use-paredit-bindings))
+  paredit-everywhere 
+  :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
 
 (use-package 
   geiser)
@@ -152,8 +143,6 @@
 
 ;; formats the buffer before saving
 ;; (add-hook 'before-save-hook 'tide-format-before-save)
-
-
 
 (add-hook 'after-init-hook 'global-company-mode)
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-mode))
