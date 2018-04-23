@@ -4,16 +4,20 @@
 ;;
 
 ;;; Code:
-(require 'bind-key)
+
+(package-initialize)
+
 (require 'package)
-(require 'server)
 
-(add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/") t)
-
-(eval-when-compile 
-  (require 'use-package))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t)
+
+(use-package 
+  bind-key)
+
+(use-package 
+  server)
 
 (use-package 
   exec-path-from-shell 
@@ -30,7 +34,6 @@
 (use-package 
   rjsx-mode 
   :mode "\\.js\\'")
-
 
 (defun setup-tide-mode () 
   "Set up Tide mode." 
@@ -79,30 +82,32 @@
 
 (use-package 
   wgrep)
+(use-package 
+  elisp-format)
 
-;; (use-package 
-;;   elisp-format)
-
-;; (use-package 
-;;   paredit 
+;; (use-package
+;;   paredit
 ;;   :config
-;;   (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
-;;   (add-hook 'scheme-mode-hook 'paredit-mode) 
-;;   (add-hook 'lisp-mode-hook 'paredit-mode) 
-;;   (add-hook 'lisp-interaction-mode-hook 'paredit-mode) 
+;;   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+;;   (add-hook 'scheme-mode-hook 'paredit-mode)
+;;   (add-hook 'lisp-mode-hook 'paredit-mode)
+;;   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
 ;;   (add-hook 'clojure-mode-hook 'paredit-mode)
 ;;   (if (bound-and-true-p paredit-mode) (electric-pair-mode -1) (electric-pair-mode 1)))
 
 
-;; (use-package 
-;;   paredit-everywhere 
+;; (use-package
+;;   paredit-everywhere
 ;;   :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
-(use-package
+
+(use-package 
   smartparens)
 
-(use-package
-  smartparens-config
-  :ensure smartparens)
+(use-package 
+  smartparens-config 
+  :ensure smartparens 
+  :config (smartparens-global-strict-mode t) 
+  (sp-use-paredit-bindings))
 
 (use-package 
   geiser)
