@@ -1,111 +1,154 @@
 ;;; init.el --- Emacs init file
 
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
-(package-initialize)
-
 (require 'bind-key)
-(require 'server)
 (require 'package)
+(require 'server)
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/") t)
 
-(eval-when-compile
+(eval-when-compile 
   (require 'use-package))
 
 (setq use-package-always-ensure t)
 
-(use-package
-  exec-path-from-shell
+(use-package 
+  exec-path-from-shell 
   :config (exec-path-from-shell-initialize))
 
-(use-package
-  which-key
+(use-package 
+  which-key 
   :init (which-key-mode))
 
-(use-package
-  beacon
+(use-package 
+  beacon 
   :init (beacon-mode 1))
 
-(use-package
-  rjsx-mode
+(use-package 
+  rjsx-mode 
   :mode "\\.js\\'")
 
-(use-package
-  projectile
+
+(defun setup-tide-mode () 
+  "Set up Tide mode." 
+  (interactive) 
+  (tide-setup) 
+  (flycheck-mode +1) 
+  (setq flycheck-check-syntax-automatically '(save-mode-enabled)) 
+  (eldoc-mode +1) 
+  (tide-hl-identifier-mode +1) 
+  (company-mode +1))
+
+(use-package 
+  tide 
+  :ensure t 
+  :config (setq company-tooltip-align-annotations t) 
+  (add-hook 'before-save-hook 'tide-format-before-save) 
+  (add-hook 'rjsx-mode-hook #'setup-tide-mode))
+
+(use-package 
+  projectile 
   :init (projectile-mode))
 
-(use-package
+(use-package 
   avy)
-  
+
 (setq projectile-completion-system 'ivy)
 
-(use-package
-  ivy
+(use-package 
+  ivy 
   :init (ivy-mode 1))
 
-(use-package
+(use-package 
   zenburn-theme)
 
-(use-package
+(use-package 
   counsel)
 
-(use-package
+(use-package 
   counsel-projectile)
 
-(use-package
+(use-package 
   clojure-mode)
 
-(use-package
+(use-package 
   cider)
 
-(use-package
+(use-package 
   wgrep)
 
+;; (use-package 
+;;   elisp-format)
+
+;; (use-package 
+;;   paredit 
+;;   :config
+;;   (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
+;;   (add-hook 'scheme-mode-hook 'paredit-mode) 
+;;   (add-hook 'lisp-mode-hook 'paredit-mode) 
+;;   (add-hook 'lisp-interaction-mode-hook 'paredit-mode) 
+;;   (add-hook 'clojure-mode-hook 'paredit-mode)
+;;   (if (bound-and-true-p paredit-mode) (electric-pair-mode -1) (electric-pair-mode 1)))
+
+
+;; (use-package 
+;;   paredit-everywhere 
+;;   :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
 (use-package
-  elisp-format)
+  smartparens)
 
 (use-package
-  paredit)
+  smartparens-config
+  :ensure smartparens)
 
-(use-package
+(use-package 
   geiser)
 
-(use-package
+(use-package 
   company)
 
-(use-package
-  telephone-line
+(use-package 
+  telephone-line 
   :init (telephone-line-mode 1))
 
-(use-package
-  magit
+(use-package 
+  magit 
   :bind ("C-x g" . magit-status))
 
-(use-package
-  super-save
+(use-package 
+  super-save 
   :init (super-save-mode +1))
 
-(use-package
-  prettier-js
+(use-package 
+  prettier-js 
   :init (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
-(use-package
-  add-node-modules-path
+(use-package 
+  add-node-modules-path 
   :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
 
-(use-package
-  dumb-jump
-  :config (setq dumb-jump-selector 'ivy)
+(use-package 
+  dumb-jump 
+  :config (setq dumb-jump-selector 'ivy) 
   :init (dumb-jump-mode))
 
-(use-package flycheck
+(use-package 
+  flycheck 
   :init (global-flycheck-mode))
 
-(use-package expand-region)
+(use-package 
+  expand-region)
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+;; (add-hook 'before-save-hook 'tide-format-before-save)
+
+
 
 (add-hook 'after-init-hook 'global-company-mode)
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-mode))
@@ -117,7 +160,7 @@
 (setq rjsx-indent-level 2)
 (setq-default js2-basic-offset 2 js2-bounce-indent-p nil)
 (setq-default js2-strict-trailing-comma-warning nil)
-(set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
 
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
@@ -128,11 +171,11 @@
 (scroll-bar-mode -1)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
-(when (version<= "26.0.50" emacs-version )
+(when (version<= "26.0.50" emacs-version ) 
   (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
 
-(or (server-running-p)
+(or (server-running-p) 
     (server-start))
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
