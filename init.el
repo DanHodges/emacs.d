@@ -9,6 +9,9 @@
 
 (require 'package)
 
+(eval-when-compile 
+  (require 'use-package))
+
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t)
@@ -48,7 +51,6 @@
 (use-package 
   tide 
   :config (setq company-tooltip-align-annotations t) 
-  (add-hook 'before-save-hook 'tide-format-before-save) 
   (add-hook 'rjsx-mode-hook #'setup-tide-mode))
 
 (use-package 
@@ -57,6 +59,11 @@
 
 (use-package 
   avy)
+
+(use-package 
+  ace-window 
+  :bind ("M-o" . ace-window) 
+  :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
 
 (setq projectile-completion-system 'ivy)
 
@@ -134,37 +141,38 @@
 (use-package 
   flycheck 
   :init (global-flycheck-mode))
+(setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
 
 (use-package 
   expand-region)
 
-;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
-
-;; formats the buffer before saving
-;; (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'after-init-hook 'global-company-mode)
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-mode))
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+
 (setq js-indent-level 2)
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
-(setq-default js2-basic-offset 2 js2-bounce-indent-p nil)
+
 (setq-default js2-strict-trailing-comma-warning nil)
 (set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
-
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
 (setq ivy-height 5)
 
 (tool-bar-mode -1)
 (menu-bar-mode 1)
-(scroll-bar-mode -1)
+(scroll-bar-mode 0)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
+
+(setq initial-frame-alist '((menu-bar-lines . 0) 
+			    (tool-bar-lines . 0)))
+
 (when (version<= "26.0.50" emacs-version ) 
   (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
