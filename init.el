@@ -1,22 +1,26 @@
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+;;; init.el --- Emacs init file
+
+;;; Commentary:
+;;
+
+;;; Code:
+
 (package-initialize)
 
-(unless (package-installed-p 'use-package) 
-  (package-refresh-contents) 
-  (package-install 'use-package))
+(require 'package)
 
 (eval-when-compile 
   (require 'use-package))
 
-(require 'diminish)
-
-(require 'bind-key)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t)
+
+(use-package 
+  bind-key)
+
+(use-package 
+  server)
 
 (use-package 
   exec-path-from-shell 
@@ -34,14 +38,32 @@
   rjsx-mode 
   :mode "\\.js\\'")
 
+(defun setup-tide-mode () 
+  "Set up Tide mode." 
+  (interactive) 
+  (tide-setup) 
+  (flycheck-mode +1) 
+  (setq flycheck-check-syntax-automatically '(save-mode-enabled)) 
+  (eldoc-mode +1) 
+  (tide-hl-identifier-mode +1) 
+  (company-mode +1))
+
 (use-package 
-  zenburn-theme)
-(set-face-attribute 'fringe nil 
-		    :background nil)
+  tide 
+  :config (setq company-tooltip-align-annotations t) 
+  (add-hook 'rjsx-mode-hook #'setup-tide-mode))
 
 (use-package 
   projectile 
   :init (projectile-mode))
+
+(use-package 
+  avy)
+
+(use-package 
+  ace-window 
+  :bind ("M-o" . ace-window) 
+  :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
 
 (setq projectile-completion-system 'ivy)
 
@@ -50,23 +72,19 @@
   :init (ivy-mode 1))
 
 (use-package 
-  counsel)
+  zenburn-theme)
 
 (use-package 
-  neotree)
+  counsel)
 
 (use-package 
   counsel-projectile)
 
 (use-package 
-  flycheck)
+  clojure-mode)
 
 (use-package 
-  lsp-mode)
-
-(use-package 
-  lsp-javascript-typescript 
-  :init (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable))
+  cider)
 
 (use-package 
   wgrep)
@@ -75,14 +93,29 @@
   elisp-format)
 
 (use-package 
-  evil 
-  :init (evil-mode 1))
+  paredit 
+  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
+  (add-hook 'scheme-mode-hook 'paredit-mode) 
+  (add-hook 'lisp-mode-hook 'paredit-mode) 
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode) 
+  (add-hook 'clojure-mode-hook 'paredit-mode) 
+  (if (bound-and-true-p paredit-mode) 
+      (electric-pair-mode -1) 
+    (electric-pair-mode 1)))
 
 (use-package 
-  paredit)
+  paredit-everywhere 
+  :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
 
 (use-package 
   geiser)
+
+(use-package 
+  company)
+
+(use-package 
+  telephone-line 
+  :init (telephone-line-mode 1))
 
 (use-package 
   magit 
@@ -106,101 +139,77 @@
   :init (dumb-jump-mode))
 
 (use-package 
-  powerline 
-  :config (powerline-default-theme))
+  flycheck 
+  :init (global-flycheck-mode))
+(setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
 
 (use-package 
-  company)
+  expand-region)
+
+(setq company-tooltip-align-annotations t)
+
 (add-hook 'after-init-hook 'global-company-mode)
-(use-package 
-  company-lsp)
-(push 'company-lsp company-backends)
+(add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-mode))
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+
 (setq js-indent-level 2)
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
-(setq-default js2-basic-offset 2 js2-bounce-indent-p nil)
 
 (setq-default js2-strict-trailing-comma-warning nil)
-(setq-default line-spacing .25)
-(set-default-font "Monaco-14")
-
-(when window-system  (global-hl-line-mode 1))
-(when window-system  (global-prettify-symbols-mode t))
+(set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+(setq ivy-height 5)
 
 (tool-bar-mode -1)
 (menu-bar-mode 1)
-(scroll-bar-mode -1)
+(scroll-bar-mode 0)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
-(global-linum-mode)
+
+(setq initial-frame-alist '((menu-bar-lines . 0) 
+			    (tool-bar-lines . 0)))
+
+(when (version<= "26.0.50" emacs-version ) 
+  (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
 
-(require 'server)
 (or (server-running-p) 
     (server-start))
 
-(global-set-key (kbd "s-1") 'neotree-toggle)
-
-(defun move-line-up () 
-  (interactive) 
-  (transpose-lines 1) 
-  (forward-line -2))
-
-(defun move-line-down () 
-  (interactive) 
-  (forward-line 1) 
-  (transpose-lines 1) 
-  (forward-line -1))
-
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-<down>") 'move-line-down)
-
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
-(global-set-key (kbd "s-[") 
-		(lambda () 
-		  (interactive) 
-		  (other-window -1)))
-
-(global-set-key (kbd "s-]") 
-		(lambda () 
-		  (interactive) 
-		  (other-window 1)))
-(global-set-key (kbd "s-<left>")  'windmove-left)
-(global-set-key (kbd "s-<right>") 'windmove-right)
-(global-set-key (kbd "s-<up>")    'windmove-up)
-(global-set-key (kbd "s-<down>")  'windmove-down)
-
-(global-set-key (kbd "s-e") 'evil-mode)
-;; use Emacs keybindings when in insert mode }:)
-(setcdr evil-insert-state-map nil)
-(define-key evil-insert-state-map [escape] 'evil-normal-state)
-(global-set-key (kbd "s-(") 'paredit-mode)
-(global-set-key (kbd "s-p") 'projectile-find-file)
-(global-set-key (kbd "s-P") 'projectile-switch-project)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "s-=") 'text-scale-increase)
 (global-set-key (kbd "s--") 'text-scale-decrease)
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector [default default default italic underline success warning error]) 
- '(lsp-project-whitelist (quote ("^/Users/dxhodge/code/MyWsb/$" "^/Users/dxhodge/code/TitleBits/$"
-				 "^/Users/dxhodge/code/hawaii-react-js/$"))) 
- '(package-selected-packages (quote (company-lsp company company-mode neotree powerline magit
-						 dumb-jump geiser paredit parredit
-						 counsel-projectile use-package diminish))))
-(put 'downcase-region 'disabled nil)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-'") 'avy-goto-char)
+(global-set-key (kbd "C-;") 'avy-goto-char-timer)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+(provide 'init)
+
+;;; init.el ends here
