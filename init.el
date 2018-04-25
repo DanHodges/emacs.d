@@ -62,7 +62,6 @@
 
 (use-package 
   ace-window 
-  :bind ("M-o" . ace-window) 
   :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
 
 (setq projectile-completion-system 'ivy)
@@ -90,9 +89,6 @@
   wgrep)
 
 (use-package 
-  elisp-format)
-
-(use-package 
   paredit 
   :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
   (add-hook 'scheme-mode-hook 'paredit-mode) 
@@ -118,8 +114,14 @@
   :init (telephone-line-mode 1))
 
 (use-package 
-  magit 
-  :bind ("C-x g" . magit-status))
+  magit)
+
+(use-package 
+  key-chord 
+  :init (key-chord-mode 1))
+
+(use-package 
+  general)
 
 (use-package 
   super-save 
@@ -157,6 +159,7 @@
 (setq js-indent-level 2)
 (setq js2-indent-level 2)
 (setq rjsx-indent-level 2)
+(setq next-line-add-newlines t)
 
 (setq-default js2-strict-trailing-comma-warning nil)
 (set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
@@ -182,30 +185,38 @@
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "s-=") 'text-scale-increase)
-(global-set-key (kbd "s--") 'text-scale-decrease)
-(global-set-key (kbd "s-/") 'comment-or-uncomment-region)
+(general-define-key
+ "C-x g" . magit-status
+ "C-x C-b" 'ibuffer
+ "s-=" 'text-scale-increase
+ "s--" 'text-scale-decrease
+ "s-/" 'comment-or-uncomment-region
 
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+ "C-s" 'swiper
+ "M-x" 'counsel-M-x
+ 
+ "C-x C-f" 'counsel-find-file
+ "<f1> f" 'counsel-describe-function
+ "<f1> v" 'counsel-describe-variable
+ "<f1> l" 'counsel-find-library
+ "<f2> i" 'counsel-info-lookup-symbol
+ "<f2> u" 'counsel-unicode-char
 
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+ "C-c g" 'counsel-git
+ "C-c j" 'counsel-git-grep
+ "C-c k" 'counsel-ag
+ "C-x l" 'counsel-locate
+ "C-S-o" 'counsel-rhythmbox
 
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "C-'") 'avy-goto-char)
-(global-set-key (kbd "C-;") 'avy-goto-char-timer)
-(global-set-key (kbd "C-=") 'er/expand-region)
+ "C-c C-r" 'ivy-resume
+ "C-'" 'avy-goto-char
+ "C-;" 'avy-goto-char-timer
+ "C-=" 'er/expand-region
+
+ (general-chord "bb") 'ivy-switch-buffer
+ (general-chord "cc") (general-simulate-key "C-c")
+ (general-chord "xx") (general-simulate-key "C-x")
+ (general-chord "ww") 'ace-window)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
