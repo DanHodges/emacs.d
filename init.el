@@ -172,6 +172,7 @@
 (scroll-bar-mode 0)
 (global-visual-line-mode 1)
 (desktop-save-mode 1)
+(delete-selection-mode 1)
 
 (setq initial-frame-alist '((menu-bar-lines . 0) 
 			    (tool-bar-lines . 0)))
@@ -186,7 +187,7 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 (general-define-key
- "C-x g" . magit-status
+ "C-x g"  'magit-status
  "C-x C-b" 'ibuffer
  "s-=" 'text-scale-increase
  "s--" 'text-scale-decrease
