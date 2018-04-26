@@ -1,18 +1,19 @@
 ;;; init.el --- Emacs init file
 
 ;;; Commentary:
-;;
+;; New install instructions
+;; 1.) M-x package-refresh-contents RET
+;; 2.) M-x package-install RET use-package RET
+;; 3.) Restart Emacs
 
 ;;; Code:
-
-(package-initialize)
-
 (require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
 (eval-when-compile
   (require 'use-package))
-
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t)
 
