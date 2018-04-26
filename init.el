@@ -211,9 +211,13 @@
  "C-;" 'avy-goto-char-timer
  "C-=" 'er/expand-region
 
+ ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
+
  (general-chord "bb") 'ivy-switch-buffer
  (general-chord "cc") (general-simulate-key "C-c")
+ (general-chord "yy") 'avy-goto-char
  (general-chord "xx") (general-simulate-key "C-x")
+ (general-chord "vv") 'er/expand-region
  (general-chord "ww") 'ace-window)
 
 (setq custom-file "~/.emacs.d/custom.el")
