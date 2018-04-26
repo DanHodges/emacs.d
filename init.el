@@ -9,143 +9,140 @@
 
 (require 'package)
 
-(eval-when-compile 
+(eval-when-compile
   (require 'use-package))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t)
 
-(use-package 
+(use-package
   bind-key)
 
-(use-package 
+(use-package
   server)
 
-(use-package 
-  exec-path-from-shell 
+(use-package
+  exec-path-from-shell
   :config (exec-path-from-shell-initialize))
 
-(use-package 
-  which-key 
+(use-package
+  which-key
   :init (which-key-mode))
 
-(use-package 
-  beacon 
+(use-package
+  beacon
   :init (beacon-mode 1))
 
-(use-package 
-  rjsx-mode 
+(use-package
+  rjsx-mode
   :mode "\\.js\\'")
 
-(defun setup-tide-mode () 
-  "Set up Tide mode." 
-  (interactive) 
-  (tide-setup) 
-  (flycheck-mode +1) 
-  (setq flycheck-check-syntax-automatically '(save-mode-enabled)) 
-  (eldoc-mode +1) 
-  (tide-hl-identifier-mode +1) 
-  (company-mode +1))
+(use-package
+  flycheck
+  :init (global-flycheck-mode))
 
-(use-package 
-  tide 
-  :config (setq company-tooltip-align-annotations t) 
-  (add-hook 'rjsx-mode-hook #'setup-tide-mode))
+(use-package
+  elisp-format)
 
-(use-package 
-  projectile 
+(use-package
+  tide
+  :config (setq company-tooltip-align-annotations t)
+  (add-hook 'rjsx-mode-hook (lambda () "Set up Tide mode."
+			      (interactive)
+			      (tide-setup)
+			      (flycheck-mode +1)
+			      (setq flycheck-check-syntax-automatically '(mode-enabled save))
+			      (eldoc-mode +1)
+			      (tide-hl-identifier-mode +1)
+			      (company-mode +1))))
+
+(use-package
+  projectile
   :init (projectile-mode))
 
-(use-package 
+(use-package
   avy)
 
-(use-package 
-  ace-window 
+(use-package
+  ace-window
   :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
 
 (setq projectile-completion-system 'ivy)
 
-(use-package 
-  ivy 
+(use-package
+  ivy
   :init (ivy-mode 1))
 
-(use-package 
+(use-package
   zenburn-theme)
 
-(use-package 
+(use-package
   counsel)
 
-(use-package 
+(use-package
   counsel-projectile)
 
-(use-package 
+(use-package
   clojure-mode)
 
-(use-package 
+(use-package
   cider)
 
-(use-package 
+(use-package
   wgrep)
 
-(use-package 
-  paredit 
-  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode) 
-  (add-hook 'scheme-mode-hook 'paredit-mode) 
-  (add-hook 'lisp-mode-hook 'paredit-mode) 
-  (add-hook 'lisp-interaction-mode-hook 'paredit-mode) 
-  (add-hook 'clojure-mode-hook 'paredit-mode) 
-  (if (bound-and-true-p paredit-mode) 
-      (electric-pair-mode -1) 
+(use-package paredit
+  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'scheme-mode-hook 'paredit-mode)
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  (if (bound-and-true-p paredit-mode)
+      (electric-pair-mode -1)
     (electric-pair-mode 1)))
 
-(use-package 
-  paredit-everywhere 
+(use-package paredit-everywhere
   :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
 
-(use-package 
+(use-package
   geiser)
 
-(use-package 
+(use-package
   company)
 
-(use-package 
-  telephone-line 
+(use-package
+  telephone-line
   :init (telephone-line-mode 1))
 
-(use-package 
+(use-package
   magit)
 
-(use-package 
-  key-chord 
+(use-package
+  key-chord
   :init (key-chord-mode 1))
 
-(use-package 
+(use-package
   general)
 
-(use-package 
-  super-save 
+(use-package
+  super-save
   :init (super-save-mode +1))
 
-(use-package 
-  prettier-js 
+(use-package
+  prettier-js
   :init (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
-(use-package 
-  add-node-modules-path 
+(use-package
+  add-node-modules-path
   :init (add-hook 'rjsx-mode-hook #'add-node-modules-path))
 
-(use-package 
-  dumb-jump 
-  :config (setq dumb-jump-selector 'ivy) 
+(use-package
+  dumb-jump
+  :config (setq dumb-jump-selector 'ivy)
   :init (dumb-jump-mode))
 
-(use-package 
-  flycheck 
-  :init (global-flycheck-mode))
-(setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
-
-(use-package 
+(use-package
   expand-region)
 
 (setq company-tooltip-align-annotations t)
@@ -174,14 +171,14 @@
 (desktop-save-mode 1)
 (delete-selection-mode 1)
 
-(setq initial-frame-alist '((menu-bar-lines . 0) 
+(setq initial-frame-alist '((menu-bar-lines . 0)
 			    (tool-bar-lines . 0)))
 
-(when (version<= "26.0.50" emacs-version ) 
+(when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
 
-(or (server-running-p) 
+(or (server-running-p)
     (server-start))
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
@@ -195,7 +192,7 @@
 
  "C-s" 'swiper
  "M-x" 'counsel-M-x
- 
+
  "C-x C-f" 'counsel-find-file
  "<f1> f" 'counsel-describe-function
  "<f1> v" 'counsel-describe-variable
