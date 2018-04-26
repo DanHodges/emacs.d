@@ -46,9 +46,10 @@
 (use-package
   elisp-format)
 
+;;(setq company-tooltip-align-annotations t)
 (use-package
   tide
-  :config (setq company-tooltip-align-annotations t)
+  :config 
   (add-hook 'rjsx-mode-hook (lambda () "Set up Tide mode."
 			      (interactive)
 			      (tide-setup)
@@ -146,34 +147,31 @@
 (use-package
   expand-region)
 
-(setq company-tooltip-align-annotations t)
+(use-package
+  rainbow-delimiters)
 
 (add-hook 'after-init-hook 'global-company-mode)
-(add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-mode))
-
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-
-(setq js-indent-level 2)
-(setq js2-indent-level 2)
-(setq rjsx-indent-level 2)
-(setq next-line-add-newlines t)
-
-(setq-default js2-strict-trailing-comma-warning nil)
+(add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-))
 (set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-count-format "(%d/%d) ")
-(setq ivy-height 5)
 
 (tool-bar-mode -1)
-(menu-bar-mode 1)
-(scroll-bar-mode 0)
-(global-visual-line-mode 1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 (desktop-save-mode 1)
-(delete-selection-mode 1)
 
-(setq initial-frame-alist '((menu-bar-lines . 0)
-			    (tool-bar-lines . 0)))
+(setq company-tooltip-align-annotations t
+      make-backup-files nil
+      auto-save-default nil
+      js-indent-level 2
+      js2-strict-trailing-comma-warning nil
+      next-line-add-newlines t
+      ivy-use-virtual-buffers t
+      ivy-count-format "(%d/%d) "
+      ivy-height 5
+      ns-command-modifier 'meta
+      ns-option-modifier 'hyper
+      ns-right-option-modifier 'super
+      initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
@@ -185,41 +183,41 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 (general-define-key
- "C-x g"  'magit-status
- "C-x C-b" 'ibuffer
- "s-=" 'text-scale-increase
- "s--" 'text-scale-decrease
- "s-/" 'comment-or-uncomment-region
+  "C-x g"  'magit-status
+  "C-x C-b" 'ibuffer
+  "s-=" 'text-scale-increase
+  "s--" 'text-scale-decrease
+  "s-/" 'comment-or-uncomment-region
 
- "C-s" 'swiper
- "M-x" 'counsel-M-x
+  "C-s" 'swiper
+  "M-x" 'counsel-M-x
 
- "C-x C-f" 'counsel-find-file
- "<f1> f" 'counsel-describe-function
- "<f1> v" 'counsel-describe-variable
- "<f1> l" 'counsel-find-library
- "<f2> i" 'counsel-info-lookup-symbol
- "<f2> u" 'counsel-unicode-char
+  "C-x C-f" 'counsel-find-file
+  "<f1> f" 'counsel-describe-function
+  "<f1> v" 'counsel-describe-variable
+  "<f1> l" 'counsel-find-library
+  "<f2> i" 'counsel-info-lookup-symbol
+  "<f2> u" 'counsel-unicode-char
 
- "C-c g" 'counsel-git
- "C-c j" 'counsel-git-grep
- "C-c k" 'counsel-ag
- "C-x l" 'counsel-locate
- "C-S-o" 'counsel-rhythmbox
+  "C-c g" 'counsel-git
+  "C-c j" 'counsel-git-grep
+  "C-c k" 'counsel-ag
+  "C-x l" 'counsel-locate
+  "C-S-o" 'counsel-rhythmbox
 
- "C-c C-r" 'ivy-resume
- "C-'" 'avy-goto-char
- "C-;" 'avy-goto-char-timer
- "C-=" 'er/expand-region
+  "C-c C-r" 'ivy-resume
+  "C-'" 'avy-goto-char
+  "C-;" 'avy-goto-char-timer
+  "C-=" 'er/expand-region
 
- ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
+  ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
 
- (general-chord "bb") 'ivy-switch-buffer
- (general-chord "cc") (general-simulate-key "C-c")
- (general-chord "yy") 'avy-goto-char
- (general-chord "xx") (general-simulate-key "C-x")
- (general-chord "vv") 'er/expand-region
- (general-chord "ww") 'ace-window)
+  (general-chord "bb") 'ivy-switch-buffer
+  (general-chord "cc") (general-simulate-key "C-c")
+  (general-chord "yy") 'avy-goto-char
+  (general-chord "xx") (general-simulate-key "C-x")
+  (general-chord "vv") 'er/expand-region
+  (general-chord "ww") 'ace-window)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
