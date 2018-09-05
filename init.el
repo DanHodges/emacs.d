@@ -11,6 +11,7 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+(package-refresh-contents)
 
 (eval-when-compile
   (require 'use-package))
@@ -49,13 +50,13 @@
 ;;(setq company-tooltip-align-annotations t)
 (use-package
   tide
-  :config 
+  :config
   (add-hook 'rjsx-mode-hook (lambda () "Set up Tide mode."
 			      (interactive)
 			      (tide-setup)
 			      (flycheck-mode +1)
 			      (setq flycheck-check-syntax-automatically '(mode-enabled save))
-			      (eldoc-mode +1)
+			      ;; (eldoc-mode +1)
 			      (tide-hl-identifier-mode +1)
 			      (company-mode +1))))
 
@@ -145,6 +146,12 @@
   :init (dumb-jump-mode))
 
 (use-package
+  evil
+  :init (evil-mode 1))
+(setcdr evil-insert-state-map nil)
+(define-key evil-insert-state-map [escape] 'evil-normal-state)
+
+(use-package
   expand-region)
 
 (use-package
@@ -158,6 +165,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (desktop-save-mode 1)
+(fset 'yes-or-no-p 'y-or-n-p)
 
 (setq company-tooltip-align-annotations t
       make-backup-files nil
@@ -169,8 +177,7 @@
       ivy-count-format "(%d/%d) "
       ivy-height 5
       ns-command-modifier 'meta
-      ns-option-modifier 'hyper
-      ns-right-option-modifier 'super
+      ns-option-modifier 'super
       initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
 (when (version<= "26.0.50" emacs-version )
@@ -187,6 +194,7 @@
   "C-x C-b" 'ibuffer
   "s-=" 'text-scale-increase
   "s--" 'text-scale-decrease
+
   "s-/" 'comment-or-uncomment-region
 
   "C-s" 'swiper
@@ -212,8 +220,8 @@
 
   ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
 
-  (general-chord "bb") 'ivy-switch-buffer
-  (general-chord "cc") (general-simulate-key "C-c")
+  (general-chord "xb") 'ivy-switch-buffer
+  (general-chord "xc") (general-simulate-key "C-c")
   (general-chord "yy") 'avy-goto-char
   (general-chord "xx") (general-simulate-key "C-x")
   (general-chord "vv") 'er/expand-region
@@ -225,3 +233,4 @@
 (provide 'init)
 
 ;;; init.el ends here
+
