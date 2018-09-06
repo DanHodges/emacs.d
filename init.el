@@ -147,7 +147,7 @@
 
 (use-package
   evil
-  :init (evil-mode 1))
+  :init (evil-mode 0))
 (setcdr evil-insert-state-map nil)
 (define-key evil-insert-state-map [escape] 'evil-normal-state)
 
