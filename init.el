@@ -178,6 +178,8 @@
       ivy-height 5
       ns-command-modifier 'meta
       ns-option-modifier 'super
+      x-meta-keysym 'super
+      x-super-keysym 'meta
       initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
 (when (version<= "26.0.50" emacs-version )
