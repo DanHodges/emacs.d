@@ -33,10 +33,6 @@
   :init (which-key-mode))
 
 (use-package
-  beacon
-  :init (beacon-mode 1))
-
-(use-package
   rjsx-mode
   :mode "\\.js\\'")
 
