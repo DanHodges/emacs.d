@@ -168,6 +168,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (setq company-tooltip-align-annotations t
+      scroll-preserve-screen-position 1
+      next-line-add-newlines nil
       make-backup-files nil
       auto-save-default nil
       js-indent-level 2
@@ -201,6 +203,9 @@
 
   "C-s" 'swiper
   "M-x" 'counsel-M-x
+
+  "M-n"  "C-u 1 C-v"
+  "M-p" "C-u 1 M-v"
 
   "C-x C-f" 'counsel-find-file
   "<f1> f" 'counsel-describe-function
