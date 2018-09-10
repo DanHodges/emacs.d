@@ -192,10 +192,10 @@
 (general-define-key
   "C-x g"  'magit-status
   "C-x C-b" 'ibuffer
-  "s-=" 'text-scale-increase
-  "s--" 'text-scale-decrease
+  "M-=" 'text-scale-increase
+  "M--" 'text-scale-decrease
 
-  "s-/" 'comment-or-uncomment-region
+  "M-/" 'comment-or-uncomment-region
 
   "C-s" 'swiper
   "M-x" 'counsel-M-x
@@ -218,17 +218,25 @@
 
   "C-c C-r" 'ivy-resume
   "C-'" 'avy-goto-char
-  "C-;" 'avy-goto-char-timer
   "C-=" 'er/expand-region
 
   ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
 
-  (general-chord "xb") 'ivy-switch-buffer
-  (general-chord "xc") (general-simulate-key "C-c")
-  (general-chord "yy") 'avy-goto-char
-  (general-chord "xx") (general-simulate-key "C-x")
+  (general-chord "''") 'avy-goto-char-timer
   (general-chord "vv") 'er/expand-region
   (general-chord "ww") 'ace-window)
+
+(general-define-key
+  :states 'normal
+  :prefix "SPC"
+  "SPC" 'counsel-git
+  "s" 'buffer
+  "f" "C-c a M-n"
+  "d" 'delete-window
+  "h" 'split-window-vertically
+  "v" 'split-window-horizontally
+  "i" 'dumb-jump-go
+  "o" 'dumb-jump-back)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
