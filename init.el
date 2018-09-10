@@ -143,7 +143,7 @@
 
 (use-package
   evil
-  :init (evil-mode 0))
+  :init (evil-mode 1))
 (setcdr evil-insert-state-map nil)
 (define-key evil-insert-state-map [escape] 'evil-normal-state)
 
@@ -180,7 +180,7 @@
       x-super-keysym 'meta
       initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
-(when (version<= "26.0.50" emacs-version )
+(when (version<= "26.0.50" emacs-version)
   (global-display-line-numbers-mode))
 (global-auto-revert-mode t)
 
