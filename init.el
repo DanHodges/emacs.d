@@ -170,7 +170,6 @@
       auto-save-default nil
       js-indent-level 2
       js2-strict-trailing-comma-warning nil
-      next-line-add-newlines t
       ivy-use-virtual-buffers t
       ivy-count-format "(%d/%d) "
       ivy-height 5
@@ -200,6 +199,7 @@
   "C-s" 'swiper
   "M-x" 'counsel-M-x
 
+  ;; smooth scrolling
   "M-n"  "C-u 1 C-v"
   "M-p" "C-u 1 M-v"
 
