@@ -148,6 +148,10 @@
 (define-key evil-insert-state-map [escape] 'evil-normal-state)
 
 (use-package
+  evil-mc
+  :init (global-evil-mc-mode 1))
+
+(use-package
   expand-region)
 
 (use-package
@@ -222,21 +226,24 @@
 
   ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
 
-  (general-chord "''") 'avy-goto-char-timer
-  (general-chord "vv") 'er/expand-region
-  (general-chord "ww") 'ace-window)
+  (general-chord ",,") 'avy-goto-char-timer)
 
 (general-define-key
   :states 'normal
   :prefix "SPC"
   "SPC" 'counsel-git
-  "s" 'buffer
-  "f" "C-c a M-n"
+  "w" 'ace-window
+  "s" 'save-buffer
+  "f" 'counsel-projectile-ag
   "d" 'delete-window
   "h" 'split-window-vertically
   "v" 'split-window-horizontally
   "i" 'dumb-jump-go
   "o" 'dumb-jump-back)
+
+(general-define-key
+  :states 'visual
+  "af" 'er/expand-region)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
