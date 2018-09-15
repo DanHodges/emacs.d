@@ -19,9 +19,6 @@
 (setq use-package-always-ensure t)
 
 (use-package
-  bind-key)
-
-(use-package
   server)
 
 (use-package
@@ -77,7 +74,8 @@
   zenburn-theme)
 
 (use-package
-  counsel)
+  counsel
+  :init (counsel-mode 1))
 
 (use-package
   counsel-projectile)
@@ -159,8 +157,13 @@
 
 (add-hook 'after-init-hook 'global-company-mode)
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-))
-(set-frame-font "-*-Source Code Pro-regular-r-normal-*-16-*-*-*-m-0-iso10646-1" t t)
+(set-face-attribute 'default nil
+		    :family "Source Code Pro"
+		    :height 165
+		    :weight 'normal
+		    :width 'normal)
 
+(global-undo-tree-mode 1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -176,7 +179,7 @@
       js2-strict-trailing-comma-warning nil
       ivy-use-virtual-buffers t
       ivy-count-format "(%d/%d) "
-      ivy-height 5
+      ivy-height 6
       ns-command-modifier 'meta
       ns-option-modifier 'super
       x-meta-keysym 'super
@@ -222,9 +225,6 @@
 
   "C-c C-r" 'ivy-resume
   "C-'" 'avy-goto-char
-  "C-=" 'er/expand-region
-
-  ;; https://blogs.sas.com/content/iml/2014/10/03/double-letter-bigrams.html#prettyPhoto
 
   (general-chord ",,") 'avy-goto-char-timer)
 
