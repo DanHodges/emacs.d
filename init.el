@@ -66,16 +66,17 @@
 
 (setq projectile-completion-system 'ivy)
 
-(use-package
-  ivy
-  :init (ivy-mode 1))
 
 (use-package
   zenburn-theme)
 
 (use-package
+  ivy-hydra)
+
+(use-package
   counsel
-  :init (counsel-mode 1))
+  :init (counsel-mode 1)
+        (ivy-mode 1))
 
 (use-package
   counsel-projectile)
@@ -144,6 +145,7 @@
   :init (evil-mode 1))
 (setcdr evil-insert-state-map nil)
 (define-key evil-insert-state-map [escape] 'evil-normal-state)
+(evil-set-initial-state 'ivy-occur-grep-mode 'normal)
 
 (use-package
   evil-mc
