@@ -11,7 +11,8 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-(package-refresh-contents)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 (eval-when-compile
   (require 'use-package))
@@ -40,6 +41,9 @@
 (use-package
   elisp-format)
 
+(use-package
+  diminish)
+
 ;;(setq company-tooltip-align-annotations t)
 (use-package
   tide
@@ -57,15 +61,14 @@
   projectile
   :init (projectile-mode))
 
+(setq projectile-completion-system 'ivy)
+
 (use-package
   avy)
 
 (use-package
   ace-window
   :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
-
-(setq projectile-completion-system 'ivy)
-
 
 (use-package
   zenburn-theme)
@@ -76,7 +79,10 @@
 (use-package
   counsel
   :init (counsel-mode 1)
-        (ivy-mode 1))
+  (ivy-mode 1)
+  :config (setq ivy-use-virtual-buffers t
+	        ivy-count-format "(%d/%d) "
+	        ivy-height 6))
 
 (use-package
   counsel-projectile)
@@ -109,9 +115,13 @@
 (use-package
   company)
 
+;; (use-package
+;;   telephone-line
+;;   :init (telephone-line-mode 1))
+
 (use-package
-  telephone-line
-  :init (telephone-line-mode 1))
+  spaceline
+  :init (spaceline-emacs-theme))
 
 (use-package
   magit)
@@ -142,10 +152,11 @@
 
 (use-package
   evil
-  :init (evil-mode 1))
-(setcdr evil-insert-state-map nil)
-(define-key evil-insert-state-map [escape] 'evil-normal-state)
-(evil-set-initial-state 'ivy-occur-grep-mode 'normal)
+  :init (evil-mode 1)
+  ;; use emacs bindngs in insert mode
+  :config (setcdr evil-insert-state-map nil)
+          (define-key evil-insert-state-map [escape] 'evil-normal-state)
+          (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
 
 (use-package
   evil-mc
@@ -154,14 +165,11 @@
 (use-package
   expand-region)
 
-(use-package
-  rainbow-delimiters)
-
 (add-hook 'after-init-hook 'global-company-mode)
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-))
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
-		    :height 165
+		    :height 160
 		    :weight 'normal
 		    :width 'normal)
 
@@ -179,9 +187,6 @@
       auto-save-default nil
       js-indent-level 2
       js2-strict-trailing-comma-warning nil
-      ivy-use-virtual-buffers t
-      ivy-count-format "(%d/%d) "
-      ivy-height 6
       ns-command-modifier 'meta
       ns-option-modifier 'super
       x-meta-keysym 'super
@@ -196,6 +201,7 @@
     (server-start))
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (general-define-key
   "C-x g"  'magit-status
@@ -253,4 +259,3 @@
 (provide 'init)
 
 ;;; init.el ends here
-
