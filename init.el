@@ -44,7 +44,6 @@
 (use-package
   diminish)
 
-;;(setq company-tooltip-align-annotations t)
 (use-package
   tide
   :config
@@ -53,7 +52,7 @@
 			      (tide-setup)
 			      (flycheck-mode +1)
 			      (setq flycheck-check-syntax-automatically '(mode-enabled save))
-			      ;; (eldoc-mode +1)
+			      (eldoc-mode +1)
 			      (tide-hl-identifier-mode +1)
 			      (company-mode +1))))
 
@@ -82,7 +81,7 @@
   (ivy-mode 1)
   :config (setq ivy-use-virtual-buffers t
 	        ivy-count-format "(%d/%d) "
-	        ivy-height 6))
+	        ivy-height 10))
 
 (use-package
   counsel-projectile)
@@ -96,28 +95,11 @@
 (use-package
   wgrep)
 
-(use-package paredit
-  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'scheme-mode-hook 'paredit-mode)
-  (add-hook 'lisp-mode-hook 'paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
-  (add-hook 'clojure-mode-hook 'paredit-mode)
-  (if (bound-and-true-p paredit-mode)
-      (electric-pair-mode -1)
-    (electric-pair-mode 1)))
-
-(use-package paredit-everywhere
-  :config (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
-
 (use-package
   geiser)
 
 (use-package
   company)
-
-;; (use-package
-;;   telephone-line
-;;   :init (telephone-line-mode 1))
 
 (use-package
   spaceline
@@ -125,6 +107,10 @@
 
 (use-package
   magit)
+
+(use-package
+  evil-magit
+  :after magit)
 
 (use-package
   key-chord
@@ -152,11 +138,17 @@
 
 (use-package
   evil
-  :init (evil-mode 1)
-  ;; use emacs bindngs in insert mode
-  :config (setcdr evil-insert-state-map nil)
-          (define-key evil-insert-state-map [escape] 'evil-normal-state)
-          (evil-set-initial-state 'ivy-occur-grep-mode 'normal))
+  :config
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (evil-mode 1))
+
+(use-package
+  evil-collection
+  :after evil
+  :custom (evil-collection-setup-minibuffer t)
+  :config
+  (evil-collection-init))
 
 (use-package
   evil-mc
@@ -180,8 +172,8 @@
 (desktop-save-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq company-tooltip-align-annotations t
-      scroll-preserve-screen-position 1
+(setq scroll-preserve-screen-position 1
+      company-tooltip-align-annotations t
       next-line-add-newlines nil
       make-backup-files nil
       auto-save-default nil
@@ -189,8 +181,6 @@
       js2-strict-trailing-comma-warning nil
       ns-command-modifier 'meta
       ns-option-modifier 'super
-      x-meta-keysym 'super
-      x-super-keysym 'meta
       initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
 (when (version<= "26.0.50" emacs-version)
@@ -211,12 +201,12 @@
 
   "M-/" 'comment-or-uncomment-region
 
-  "C-s" 'swiper
+  "M-f" 'swiper
   "M-x" 'counsel-M-x
-
-  ;; smooth scrolling
-  "M-n"  "C-u 1 C-v"
-  "M-p" "C-u 1 M-v"
+  "M-v" 'clipboard-yank
+  "M-c" 'clipboard-kill-ring-save
+  "M-o" 'counsel-find-file
+  "M-w" 'delete-window
 
   "C-x C-f" 'counsel-find-file
   "<f1> f" 'counsel-describe-function
@@ -232,7 +222,6 @@
   "C-S-o" 'counsel-rhythmbox
 
   "C-c C-r" 'ivy-resume
-  "C-'" 'avy-goto-char
 
   (general-chord ",,") 'avy-goto-char-timer)
 
@@ -244,10 +233,12 @@
   "s" 'save-buffer
   "f" 'counsel-projectile-ag
   "d" 'delete-window
+  "D" 'delete-other-windows
   "h" 'split-window-vertically
   "v" 'split-window-horizontally
   "i" 'dumb-jump-go
-  "o" 'dumb-jump-back)
+  "o" 'dumb-jump-back
+  "b" 'ivy-switch-buffer)
 
 (general-define-key
   :states 'visual
