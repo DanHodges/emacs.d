@@ -138,9 +138,10 @@
 
 (use-package
   evil
-  :config
+  :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  :config
   (evil-mode 1))
 
 (use-package
