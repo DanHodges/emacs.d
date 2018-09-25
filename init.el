@@ -162,7 +162,7 @@
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-))
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
-		    :height 160
+		    :height 175
 		    :weight 'normal
 		    :width 'normal)
 
