@@ -112,11 +112,6 @@
    spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
 
 (use-package
-  hide-mode-line
-  :config
-  (add-hook 'rjsx-mode-hook #'hide-mode-line-mode))
-
-(use-package
   magit)
 
 (use-package
@@ -161,10 +156,6 @@
   :custom (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init))
-
-(use-package
-  evil-mc
-  :init (global-evil-mc-mode 1))
 
 (use-package
   expand-region)
@@ -236,6 +227,7 @@
   "C-S-o" 'counsel-rhythmbox
 
   "C-c C-r" 'ivy-resume
+  "<C-tab>" 'ivy-switch-buffer
 
   (general-chord ",,") 'avy-goto-char-timer)
 
