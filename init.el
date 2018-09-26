@@ -69,8 +69,11 @@
   ace-window
   :config (setq aw-keys '(?a ?r ?s ?t ?1 ?2 ?3 ?4 ?5)))
 
+;; (use-package
+;;   zenburn-theme)
+
 (use-package
-  zenburn-theme)
+  idea-darkula-theme)
 
 (use-package
   ivy-hydra)
@@ -103,7 +106,15 @@
 
 (use-package
   spaceline
-  :init (spaceline-emacs-theme))
+  :init (spaceline-emacs-theme)
+  :config
+  (setq
+   spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
+
+(use-package
+  hide-mode-line
+  :config
+  (add-hook 'rjsx-mode-hook #'hide-mode-line-mode))
 
 (use-package
   magit)
@@ -162,27 +173,29 @@
 (add-to-list 'auto-mode-alist '("\\.symlink$" . shell-script-))
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
-		    :height 175
+		    :height 170
 		    :weight 'normal
 		    :width 'normal)
 
 (global-undo-tree-mode 1)
 (tool-bar-mode -1)
+(set-fringe-mode 0)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (desktop-save-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq scroll-preserve-screen-position 1
-      company-tooltip-align-annotations t
-      next-line-add-newlines nil
-      make-backup-files nil
-      auto-save-default nil
-      js-indent-level 2
-      js2-strict-trailing-comma-warning nil
-      ns-command-modifier 'meta
-      ns-option-modifier 'super
-      initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
+(setq
+  scroll-conservatively most-positive-fixnum
+  company-tooltip-align-annotations t
+  next-line-add-newlines nil
+  make-backup-files nil
+  auto-save-default nil
+  js-indent-level 2
+  js2-strict-trailing-comma-warning nil
+  ns-command-modifier 'meta
+  ns-option-modifier 'super
+  initial-frame-alist '((menu-bar-lines . 0) (tool-bar-lines . 0)))
 
 (when (version<= "26.0.50" emacs-version)
   (global-display-line-numbers-mode))
