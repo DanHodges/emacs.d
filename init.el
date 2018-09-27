@@ -109,7 +109,7 @@
   :init (spaceline-emacs-theme)
   :config
   (setq
-   spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
+  spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
 
 (use-package
   magit)
@@ -156,6 +156,9 @@
   :custom (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init))
+
+(with-eval-after-load 'evil
+    (defalias #'forward-evil-word #'forward-evil-symbol))
 
 (use-package
   expand-region)
