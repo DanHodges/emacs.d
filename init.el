@@ -118,6 +118,12 @@
   evil-magit
   :after magit)
 
+(defun magit-status-same-window ()
+  "Don't split window."
+  (interactive)
+  (let ((pop-up-windows nil))
+    (call-interactively 'magit-status)))
+
 (use-package
   key-chord
   :init (key-chord-mode 1))
